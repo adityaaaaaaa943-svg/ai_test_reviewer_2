@@ -61,3 +61,10 @@ def test_cancelled_order_cannot_ship():
     orders.create(principal, "ord-9", [])
     orders.transition(principal, "ord-9", orders.CANCELLED)
     assert orders.can_transition(orders.CANCELLED, orders.SHIPPED) is False
+
+
+def test_restocking_fee_on_opened_return():
+    from fulfillment import returns
+
+    refund = returns.refund_for_return(10000, 500, opened=True)
+    assert refund == 8000.0
